@@ -86,7 +86,11 @@ view model =
 
 errorView : String -> Html Msg
 errorView error =
-  if (error == "") then text "" else div [ class "alert alert-danger" ] [ text "Error connecting to server" ]
+  if (error == "") then
+    text ""
+  else
+    div [ class "alert alert-danger" ]
+      [ text "Error connecting to server" ]
 
 usersView : List User -> Html Msg
 usersView users =
@@ -133,9 +137,9 @@ serverAddress =
 greetingFromServer : Cmd Msg
 greetingFromServer =
   let
-      url = serverAddress ++ "/hello"
+    url = serverAddress ++ "/hello"
   in
-     Task.perform GreetingFetchFail GreetingFetchSucceed (Http.get decodeGreeting url)
+    Task.perform GreetingFetchFail GreetingFetchSucceed (Http.get decodeGreeting url)
 
 decodeGreeting : Json.Decoder String
 decodeGreeting =
@@ -144,22 +148,20 @@ decodeGreeting =
 usersFromServer : Cmd Msg
 usersFromServer =
   let
-      url = serverAddress ++ "/users"
+    url = serverAddress ++ "/users"
   in
-     Task.perform UsersFetchFail UsersFetchSucceed (Http.get decodeUsers url)
+    Task.perform UsersFetchFail UsersFetchSucceed (Http.get decodeUsers url)
 
 decodeUsers : Json.Decoder (List User)
 decodeUsers =
   Json.at ["users"] (Json.list decodeUser)
-  -- Json.succeed Users
-  -- |: ("users" := Json.list decodeUser)
 
 singleUserFromServer : Cmd Msg
 singleUserFromServer =
   let
-      url = serverAddress ++ "/user?id=1"
+    url = serverAddress ++ "/user?id=1"
   in
-     Task.perform SingleUserFetchFail SingleUserFetchSucceed (Http.get decodeUser url)
+    Task.perform SingleUserFetchFail SingleUserFetchSucceed (Http.get decodeUser url)
 
 decodeUser : Json.Decoder User
 decodeUser =
