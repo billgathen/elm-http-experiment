@@ -35,13 +35,14 @@ type alias Report =
 
 type alias Model =
   { greeting : String
+  , error:     String
   , title:     String
   , users:     List User
   }
 
 init : (Model, Cmd Msg)
 init =
-  ( Model "?" "Elm HTTP Experiment" []
+  ( Model "?" "" "Elm HTTP Experiment" []
   , usersFromServer
   )
 
@@ -60,17 +61,17 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
     GreetingFetchSucceed newGreeting ->
-      ({ model | greeting = newGreeting }, Cmd.none)
-    GreetingFetchFail _ -> -- we're swallowing the error
-      (model, Cmd.none)
+      ({ model | greeting = newGreeting, error = "" }, Cmd.none)
+    GreetingFetchFail err ->
+      ({ model | error = (toString err), greeting = "" }, Cmd.none)
     SingleUserFetchSucceed newUser ->
       ({ model | users = [ newUser ] }, Cmd.none)
-    SingleUserFetchFail _ -> -- we're swallowing the error
-      (model, Cmd.none)
+    SingleUserFetchFail err ->
+      ({ model | error = (toString err), users = [] }, Cmd.none)
     UsersFetchSucceed newUsers ->
       ({ model | users = newUsers }, Cmd.none)
-    UsersFetchFail _ -> -- we're swallowing the error
-      (model, Cmd.none)
+    UsersFetchFail err ->
+      ({ model | error = (toString err), users = [] }, Cmd.none)
 
 
 -- VIEW
@@ -79,8 +80,13 @@ view : Model -> Html Msg
 view model =
   div [ class "container" ]
     [ h1 [] [ text model.title ]
+    , errorView model.error
     , usersView model.users
     ]
+
+errorView : String -> Html Msg
+errorView error =
+  if (error == "") then text "" else div [ class "alert alert-danger" ] [ text "Error connecting to server" ]
 
 usersView : List User -> Html Msg
 usersView users =

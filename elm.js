@@ -8708,6 +8708,18 @@ var _user$project$Main$usersView = function (users) {
 			]),
 		userList);
 };
+var _user$project$Main$errorView = function (error) {
+	return _elm_lang$core$Native_Utils.eq(error, '') ? _elm_lang$html$Html$text('') : A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('alert alert-danger')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text('Error connecting to server')
+			]));
+};
 var _user$project$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8725,6 +8737,7 @@ var _user$project$Main$view = function (model) {
 					[
 						_elm_lang$html$Html$text(model.title)
 					])),
+				_user$project$Main$errorView(model.error),
 				_user$project$Main$usersView(model.users)
 			]));
 };
@@ -8737,11 +8750,20 @@ var _user$project$Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{greeting: _p0._0}),
+						{greeting: _p0._0, error: ''}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'GreetingFetchFail':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							error: _elm_lang$core$Basics$toString(_p0._0),
+							greeting: ''
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			case 'SingleUserFetchSucceed':
 				return {
 					ctor: '_Tuple2',
@@ -8754,7 +8776,17 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'SingleUserFetchFail':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							error: _elm_lang$core$Basics$toString(_p0._0),
+							users: _elm_lang$core$Native_List.fromArray(
+								[])
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			case 'UsersFetchSucceed':
 				return {
 					ctor: '_Tuple2',
@@ -8764,7 +8796,17 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							error: _elm_lang$core$Basics$toString(_p0._0),
+							users: _elm_lang$core$Native_List.fromArray(
+								[])
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
 var _user$project$Main$Users = function (a) {
@@ -8806,9 +8848,9 @@ var _user$project$Main$decodeUsers = A2(
 	_elm_lang$core$Native_List.fromArray(
 		['users']),
 	_elm_lang$core$Json_Decode$list(_user$project$Main$decodeUser));
-var _user$project$Main$Model = F3(
-	function (a, b, c) {
-		return {greeting: a, title: b, users: c};
+var _user$project$Main$Model = F4(
+	function (a, b, c, d) {
+		return {greeting: a, error: b, title: c, users: d};
 	});
 var _user$project$Main$UsersFetchFail = function (a) {
 	return {ctor: 'UsersFetchFail', _0: a};
@@ -8826,9 +8868,10 @@ var _user$project$Main$usersFromServer = function () {
 }();
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
-	_0: A3(
+	_0: A4(
 		_user$project$Main$Model,
 		'?',
+		'',
 		'Elm HTTP Experiment',
 		_elm_lang$core$Native_List.fromArray(
 			[])),
