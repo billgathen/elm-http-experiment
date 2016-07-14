@@ -8646,16 +8646,7 @@ var _billgathen$elm_http_experiment$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
 var _billgathen$elm_http_experiment$Main$reportView = function (report) {
-	var label = A2(
-		_elm_lang$core$Basics_ops['++'],
-		report.name,
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			' (',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_elm_lang$core$Basics$toString(report.id),
-				')')));
+	var badgeLabel = _elm_lang$core$Basics$toString(report.id);
 	var status = report.active ? 'list-group-item-success' : 'disabled';
 	var classes = A2(_elm_lang$core$Basics_ops['++'], 'list-group-item ', status);
 	return A2(
@@ -8666,21 +8657,22 @@ var _billgathen$elm_http_experiment$Main$reportView = function (report) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text(label)
+				_elm_lang$html$Html$text(report.name),
+				A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('badge')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(badgeLabel)
+					]))
 			]));
 };
 var _billgathen$elm_http_experiment$Main$userView = function (user) {
 	var reports = A2(_elm_lang$core$List$map, _billgathen$elm_http_experiment$Main$reportView, user.reports);
-	var label = A2(
-		_elm_lang$core$Basics_ops['++'],
-		user.name,
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			' (',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_elm_lang$core$Basics$toString(user.id),
-				')')));
+	var badgeLabel = _elm_lang$core$Basics$toString(user.id);
 	var classes = 'list-group-item';
 	return A2(
 		_elm_lang$html$Html$li,
@@ -8690,7 +8682,17 @@ var _billgathen$elm_http_experiment$Main$userView = function (user) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text(label),
+				_elm_lang$html$Html$text(user.name),
+				A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('badge')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(badgeLabel)
+					])),
 				A2(
 				_elm_lang$html$Html$ul,
 				_elm_lang$core$Native_List.fromArray(

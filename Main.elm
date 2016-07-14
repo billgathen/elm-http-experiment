@@ -102,24 +102,27 @@ usersView users =
 userView : User -> Html Msg
 userView user =
   let
-    classes = "list-group-item"
-    label   = user.name ++ " (" ++ (toString user.id) ++ ")"
-    reports = List.map reportView user.reports
+    classes    = "list-group-item"
+    badgeLabel = toString user.id
+    reports    = List.map reportView user.reports
   in
     li [ class classes ]
-      [ text label
+      [ text user.name
+      , span [ class "badge" ] [ text badgeLabel ]
       , ul [] reports
       ]
 
 reportView : Report -> Html Msg
 reportView report =
   let
-    status = if report.active then "list-group-item-success" else "disabled"
-    classes = "list-group-item " ++ status
-    label   = report.name ++ " (" ++ (toString report.id) ++ ")"
+    status     = if report.active then "list-group-item-success" else "disabled"
+    classes    = "list-group-item " ++ status
+    badgeLabel = toString report.id
   in
     li [ class classes ]
-      [ text label ]
+      [ text report.name
+      , span [ class "badge" ] [ text badgeLabel ]
+      ]
 
 
 -- SUBSCRIPTIONS

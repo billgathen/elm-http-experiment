@@ -16,7 +16,8 @@ var reports = { reports: [ rpt1, rpt2, rpt3, rpt4 ] };
 
 var user1 = { name: "Bill", id: 1, reports: [ rpt1, rpt2 ] };
 var user2 = { name: "Liam", id: 2, reports: [ rpt3, rpt4 ] };
-var users = { users: [ user1, user2 ] };
+var user3 = { name: "Nobody", id: 3, reports: [ ] };
+var users = { users: [ user1, user2, user3 ] };
 
 function respondWithJson(rsp, code, obj) {
   headers = {
